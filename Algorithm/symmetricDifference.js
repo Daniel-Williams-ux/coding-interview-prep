@@ -8,31 +8,26 @@ Thus, for sets A and B above, and C = {2, 3}, A △ B △ C = (A △ B) △ C = 
 Create a function that takes two or more arrays and returns an array of their symmetric difference. The returned array must contain only unique values (no duplicates).
 */
 
-// Define a function named symmetricDifference
-function symmetricDifference() {
+function sym(args) {
   // Convert the arguments object into an array
   const arrays = Array.from(arguments);
 
+  // Define a helper function to compute the symmetric difference of two arrays
+  const symmetricDifference = (arr1, arr2) => {
+    return arr1
+      .filter((value) => !arr2.includes(value))
+      .concat(arr2.filter((value) => !arr1.includes(value)));
+  };
+
   // Use the reduce function to iterate over the arrays and compute the symmetric difference
   return arrays.reduce((accumulator, currentArray) => {
-    // Filter out values that are already in the accumulator from the current array
-    const valuesToAdd = currentArray.filter((value) => !accumulator.includes(value));
-
-    // Combine the unique values from the current array and the existing accumulator
-    return [
-      ...accumulator.filter((value) => !currentArray.includes(value)),
-      ...valuesToAdd,
-    ];
+    // Compute the symmetric difference between the accumulator and the current array
+    return symmetricDifference(accumulator, currentArray);
   }, []);
 }
 
-// Example arrays A, B, and C
-const A = [1, 2, 3];
-const B = [2, 3, 4];
-const C = [2, 3];
-
-// Call the symmetricDifference function with arrays A, B, and C
-const result = symmetricDifference(A, B, C);
+// Example arrays
+const result = sym([1, 2, 3], [5, 2, 1, 4]);
 
 // Output the result
-console.log(result);//[ 1, 4, 2, 3 ]
+console.log(result);//[ 3, 5, 4 ]
